@@ -4,7 +4,7 @@
  */
 
 use ferozo\ferozo;
-include(__DIR__.'/ferozo.php');
+include(__DIR__.'/../../ferozo.php');
 include(__DIR__.'/config.php');
 
 $ferozo=new ferozo;
