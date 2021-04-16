@@ -19,7 +19,7 @@ function obtenerCertificado($cuenta,$dominio,$opciones,$log=false) {
 	$pendiente = $orden->getPendingAuthorizations(LEOrder::CHALLENGE_TYPE_HTTP);
 	if(!empty($pendiente)) {
 		foreach($pendiente as $i=>$reto) {
-			echo 'Resolviendo reto #'.$i.'...'.PHP_EOL;
+			echo 'Resolviendo reto #'.($i+1).'...'.PHP_EOL;
 
 			$servidor=$opciones->ftp?$opciones->ftp:$dominio;
 			$ftp=ftp_connect($servidor);
@@ -43,7 +43,7 @@ function obtenerCertificado($cuenta,$dominio,$opciones,$log=false) {
 			}
 
 			$ruta.='.well-known/';
-			$chdir=ftp_chdir($ftp,$ruta);
+			@$chdir=ftp_chdir($ftp,$ruta);
 			if(!$chdir) {
 				ftp_mkdir($ftp,$ruta);
 				$chdir=ftp_chdir($ftp,$ruta);
@@ -55,7 +55,7 @@ function obtenerCertificado($cuenta,$dominio,$opciones,$log=false) {
 			}
 
 			$ruta.='acme-challenge/';
-			$chdir=ftp_chdir($ftp,$ruta);
+			@$chdir=ftp_chdir($ftp,$ruta);
 			if(!$chdir) {
 				ftp_mkdir($ftp,$ruta);
 				$chdir=ftp_chdir($ftp,$ruta);
@@ -66,7 +66,7 @@ function obtenerCertificado($cuenta,$dominio,$opciones,$log=false) {
 				}
 			}
 
-			$temp=__DIR__.'/temp';
+			$temp=__DIR__.'/certificados/temp';
 			file_put_contents($temp,$reto['content']);
 			$f=fopen($temp,'r');
 
